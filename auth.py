@@ -12,7 +12,6 @@ def request_token():
     client = globus_sdk.NativeAppAuthClient(CLIENT_ID)
     # We want refresh tokens for
     client.oauth2_start_flow(refresh_tokens=True)
-
     # Request authorization URL and prompt user
     authorize_url = client.oauth2_get_authorize_url()
     print('Please go to this URL and login: {0}'.format(authorize_url))
@@ -20,7 +19,6 @@ def request_token():
     auth_code = input(
                 'Please enter the code you get after login here: ').strip()
     token_response = client.oauth2_exchange_code_for_tokens(auth_code)
-
     # Save token to file using pickle, overwriting old creds
     if not os.path.exists(directory):
             os.makedirs(directory)
@@ -38,3 +36,15 @@ def read_token():
     token_response = pickle.load(fd)
     return token_response
 
+def authenticate():
+    # Initialize Client and Token
+    client = globus_sdk.NativeAppAuthClient(CLIENT_ID)
+    token = read_token()
+    # Get tokens we need
+    globus_transfer_data = token.by_resource_server['transfer.api.globus.org']
+    transfer_at = globus_transfer_data['access_token']
+    transfer_rt = globus_transfer_data['refresh_token']
+    transfer_rt_expiry = globus_transfer_data['expires_at_seconds']
+    # Validate token and get authorizer
+    authorizer = globus_sdk.RefreshTokenAuthorizer(transfer_rt, client, access_token=transfer_at, expires_at=transfer_rt_expiry)
+    return(globus_sdk.TransferClient(authorizer=authorizer))
