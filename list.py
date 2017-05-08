@@ -11,6 +11,13 @@ def list(endpointid=None):
     # Initialize Client and Token
     client = globus_sdk.NativeAppAuthClient('cca6968a-cc55-4ee9-a651-b66f059037bf')
     token = server_report.auth.read_token()
+
+    # Get tokens we need
+    globus_transfer_data = token.by_resource_server['transfer.api.globus.org']
+    transfer_at = globus_transfer_data['access_token']
+    transfer_rt = globus_transfer_data['refresh_token']
+    transfer_rt_expiry = globus_transfer_data['expires_at_seconds']
+
     # Validate token and get authorizer
     authorizer = globus_sdk.RefreshTokenAuthorizer(transfer_rt, client, access_token=transfer_at, expires_at=transfer_rt_expiry)
     #

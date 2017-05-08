@@ -4,9 +4,10 @@ import pickle
 import os
 
 CLIENT_ID = 'cca6968a-cc55-4ee9-a651-b66f059037bf'
-tokenfile = 'config.dat'
+directory = '{}/.server_report/'.format(os.environ['HOME'])
+tokenfile = '{}/.server_report/token.dat'.format(os.environ['HOME'])
 
-def request_token:
+def request_token():
     # Create client profile and start OAuth flow
     client = globus_sdk.NativeAppAuthClient(CLIENT_ID)
     # We want refresh tokens for
@@ -21,6 +22,8 @@ def request_token:
     token_response = client.oauth2_exchange_code_for_tokens(auth_code)
 
     # Save token to file using pickle, overwriting old creds
+    if not os.path.exists(directory):
+            os.makedirs(directory)
     if os.path.isfile(tokenfile):
         os.remove(tokenfile)
     fw = open(tokenfile, 'wb')
@@ -28,7 +31,7 @@ def request_token:
     fw.close()
     return
 
-def read_token:
+def read_token():
     if not os.path.isfile(tokenfile):
         request_token()
     fd = open(tokenfile, 'rb')
