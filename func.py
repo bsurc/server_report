@@ -19,8 +19,12 @@ def user_frequency(endpointid, startdate, enddate):
     with con:
         cur = con.cursor()
         cur.execute("CREATE TABLE People(Name TEXT)")
-        for task in tc.endpoint_manager_task_list(num_results=None, filter_endpoint=endpointid, filter_completion_time="{},{}".format(str(startdate), str(enddate))):
-            cur.execute("INSERT INTO People VALUES(\'{}\')".format(task["owner_string"]))
+        if startdate == '' and enddate == '':
+            for task in tc.endpoint_manager_task_list(num_results=None, filter_endpoint=endpointid):
+                cur.execute("INSERT INTO People VALUES(\'{}\')".format(task["owner_string"]))
+        else:
+            for task in tc.endpoint_manager_task_list(num_results=None, filter_endpoint=endpointid, filter_completion_time="{},{}".format(str(startdate), str(enddate))):
+                cur.execute("INSERT INTO People VALUES(\'{}\')".format(task["owner_string"]))
         cur.execute("SELECT Name, count(*) FROM People GROUP BY Name ORDER BY count(*) DESC")
         for row in cur:
             print('{}\t{}'.format(row[1], row[0]))
@@ -31,8 +35,13 @@ def job_count(endpointid, startdate, enddate):
     with con:
         cur = con.cursor()
         cur.execute("CREATE TABLE Jobs(Name TEXT)")
-        for task in tc.endpoint_manager_task_list(num_results=None, filter_endpoint=endpointid, filter_completion_time="{},{}".format(str(startdate), str(enddate))):
-            cur.execute("INSERT INTO Jobs VALUES(\'{}\')".format(task["owner_string"]))
+        if startdate == '' and enddate == '':
+            for task in tc.endpoint_manager_task_list(num_results=None, filter_endpoint=endpointid,):
+                cur.execute("INSERT INTO Jobs VALUES(\'{}\')".format(task["owner_string"]))
+        else:
+            for task in tc.endpoint_manager_task_list(num_results=None, filter_endpoint=endpointid, filter_completion_time="{},{}".format(str(startdate), str(enddate))):
+                cur.execute("INSERT INTO Jobs VALUES(\'{}\')".format(task["owner_string"]))
+
         cur.execute("SELECT count(*) FROM Jobs")
         for row in cur:
             print('{}'.format(row[0]))
