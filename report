@@ -1,2 +1,0 @@
-#!/bin/bash
-python3 -x ~/.server_report/server_report/report.py "$@"
