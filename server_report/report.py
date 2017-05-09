@@ -1,22 +1,24 @@
 #!python3 -x
-from server_report import *
-import sys, getopt
+import server_report.func as func
+import sys
+import getopt
 
-def main(arguments):
+def main():
+    arguments = sys.argv[1:]
     startdate = ''
     enddate = ''
     endpoint = ''
     try:
         opts, args = getopt.getopt(arguments, "hlE:ujs:e:a", ["help","list","endpoint=","users","jobs","start=","end=","active"])
     except getopt.GetoptError:
-        print("report.py [-h|--help] [-l|--list] [-u|--users] [-j|--jobs] [-a|--active] [-E <uuid>|--endpoint=<uuid>] [-s <isodate>|--start=<isodate>] [-e <isodate>|--end=<isodate>]")
+        print("report [-h|--help] [-l|--list] [-u|--users] [-j|--jobs] [-a|--active] [-E <uuid>|--endpoint=<uuid>] [-s <isodate>|--start=<isodate>] [-e <isodate>|--end=<isodate>]")
         sys.exit(1)
     if len(opts) == 0:
-        print("report.py [-h|--help] [-l|--list] [-u|--users] [-j|--jobs] [-a|--active] [-E <uuid>|--endpoint=<uuid>] [-s <isodate>|--start=<isodate>] [-e <isodate>|--end=<isodate>]")
+        print("report [-h|--help] [-l|--list] [-u|--users] [-j|--jobs] [-a|--active] [-E <uuid>|--endpoint=<uuid>] [-s <isodate>|--start=<isodate>] [-e <isodate>|--end=<isodate>]")
         sys.exit(1)
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            print("report.py [-h|--help] [-l|--list] [-u|--users] [-j|--jobs] [-a|--active] [-E <uuid>|--endpoint=<uuid>] [-s <isodate>|--start=<isodate>] [-e <isodate>|--end=<isodate>]")
+            print("report [-h|--help] [-l|--list] [-u|--users] [-j|--jobs] [-a|--active] [-E <uuid>|--endpoint=<uuid>] [-s <isodate>|--start=<isodate>] [-e <isodate>|--end=<isodate>]")
             sys.exit(0)
         elif opt in ("-E", "--endpoint"):
             endpoint = arg
