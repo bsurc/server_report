@@ -4,7 +4,7 @@ access to statistics of a Globus Endpoint. The Globus service already has
 tools to do this, but this application will provide simple output for system
 administration purposes. This project utilizes and requires as a dependency 
 the [globus_python_sdk](https://github.com/globus/globus-sdk-python) as well 
-as sqlite3.
+as sqlite3 (which is usually part of the python distribution).
 
 This application was developed for, and is only tested against, Python 3. 
 This software is currently in the alpha stage and features are likely to 
@@ -13,7 +13,7 @@ master branch is stable if somewhat limited.
 
 Installation:  
 ```bash
-pip install globus_sdk sqlite3  
+pip install globus_sdk  
 make install
 ```
 
