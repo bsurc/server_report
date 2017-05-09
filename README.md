@@ -6,6 +6,11 @@ administration purposes. This project utilizes and requires as a dependency
 the [globus_python_sdk](https://github.com/globus/globus-sdk-python) as well 
 as sqlite3.
 
+This application was developed for, and is only tested against, Python 3. 
+This software is currently in the alpha stage and features are likely to 
+change or be removed at any time. However, I do my best to ensure the current
+master branch is stable if somewhat limited.
+
 Installation:  
 ```bash
 pip install globus_sdk sqlite3  
