@@ -3,6 +3,7 @@ import server_report.func as func
 import sys
 import getopt
 
+
 def main():
     arguments = sys.argv[1:]
     startdate = ''
@@ -36,5 +37,6 @@ def main():
         elif opt in ("-a", "--active"):
             func.running_count(endpoint)
 
+
 if __name__ == "__main__":
-       main(sys.argv[1:])
+       main()
