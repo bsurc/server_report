@@ -15,7 +15,7 @@ Installation:
 pip install ./server_report.X.X.X.tar.gz 
 ```
 
-This project is licensed under the Apache 2.0 license, included in the 
+This project is licensed under the BSD 3-Clause license, included in the 
 LICENSE file.
 
-© Copyright 2017, Tyler Bevan
+© Copyright 2017, Boise State University
