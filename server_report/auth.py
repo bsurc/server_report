@@ -3,6 +3,9 @@ import globus_sdk
 import pickle
 import os
 from prompt_toolkit import prompt
+import logging
+
+log = logging.getLogger(__name__)
 
 CLIENT_ID = 'cca6968a-cc55-4ee9-a651-b66f059037bf'
 directory = '{}/.server_report/'.format(os.environ['HOME'])
@@ -22,7 +25,7 @@ def request_token():
     token_response = client.oauth2_exchange_code_for_tokens(auth_code)
     # Save token to file using pickle, overwriting old creds
     if not os.path.exists(directory):
-            os.makedirs(directory)
+        os.makedirs(directory)
     if os.path.isfile(tokenfile):
         os.remove(tokenfile)
     fw = open(tokenfile, 'wb')
