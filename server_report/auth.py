@@ -11,6 +11,7 @@ CLIENT_ID = 'cca6968a-cc55-4ee9-a651-b66f059037bf'
 directory = '{}/.server_report/'.format(os.environ['HOME'])
 tokenfile = '{}/.server_report/token.dat'.format(os.environ['HOME'])
 
+
 def request_token():
     # Create client profile and start OAuth flow
     client = globus_sdk.NativeAppAuthClient(CLIENT_ID)
@@ -33,12 +34,14 @@ def request_token():
     fw.close()
     return
 
+
 def read_token():
     if not os.path.isfile(tokenfile):
         request_token()
     fd = open(tokenfile, 'rb')
     token_response = pickle.load(fd)
     return token_response
+
 
 def authenticate():
     # Initialize Client and Token
@@ -50,5 +53,8 @@ def authenticate():
     transfer_rt = globus_transfer_data['refresh_token']
     transfer_rt_expiry = globus_transfer_data['expires_at_seconds']
     # Validate token and get authorizer
-    authorizer = globus_sdk.RefreshTokenAuthorizer(transfer_rt, client, access_token=transfer_at, expires_at=transfer_rt_expiry)
-    return(globus_sdk.TransferClient(authorizer=authorizer))
+    auth = globus_sdk.RefreshTokenAuthorizer(
+            transfer_rt, client,
+            access_token=transfer_at,
+            expires_at=transfer_rt_expiry)
+    return(globus_sdk.TransferClient(authorizer=auth))
