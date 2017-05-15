@@ -1,4 +1,14 @@
 #!python3
+"""Statistics generating functions.
+
+This file contains functions that generate metrics from the globus sdk.
+
+Functions:
+list_endpoints -- Return a list of managed endpoints.
+user_frequency -- Show users by data transferred and job count.
+job_count      -- Show total jobs in date range.
+running_count  -- Show jobs currently active.
+"""
 import sqlite3 as lite
 import server_report.auth as auth
 import logging
@@ -8,16 +18,18 @@ insertstring = "INSERT INTO People VALUES(\'{}\', {})"
 
 
 def list_endpoints():
-    log.info("Aquiring access token from refresh token...")
-    tc = auth.authenticate()
+    """Return the list of managed endpoints for the current user."""
+    log.info("Aquiring transfer access token from refresh token...")
+    tc = auth.authorize_transfer()
     print("My Managed Endpoints:")
     for ep in tc.endpoint_manager_monitored_endpoints():
         print("[{}] {}".format(ep["id"], ep["display_name"]))
 
 
 def user_frequency(epid, startdate, enddate):
-    log.info("Aquiring access token from refresh token...")
-    tc = auth.authenticate()
+    """Return a list of users on an endpoint sorted by data moved."""
+    log.info("Aquiring transfer access token from refresh token...")
+    tc = auth.authorize_transfer()
     log.info("Creating database in memory...")
     con = lite.connect(':memory:')
     with con:
@@ -54,8 +66,9 @@ def user_frequency(epid, startdate, enddate):
 
 
 def job_count(endpointid, startdate, enddate):
-    log.info("Aquiring access token from refresh token...")
-    tc = auth.authenticate()
+    """Return the number of jobs that completed in the given time period."""
+    log.info("Aquiring transfer access token from refresh token...")
+    tc = auth.authorize_transfer()
     log.info("Running Globus request...")
     count = 0
     if startdate == '' and enddate == '':
@@ -72,8 +85,9 @@ def job_count(endpointid, startdate, enddate):
 
 
 def running_count(endpointid):
-    log.info("Aquiring access token from refresh token...")
-    tc = auth.authenticate()
+    """Return the number of currently active jobs on an endpoint."""
+    log.info("Aquiring transfer access token from refresh token...")
+    tc = auth.authorize_transfer()
     log.info("Running Globus request...")
     count = 0
     for task in tc.endpoint_manager_task_list(

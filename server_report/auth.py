@@ -1,4 +1,13 @@
 #!python3
+"""Authentication library for server_report.
+
+This file contains functions that get and store tokens using the globus sdk.
+
+Functions:
+request_token       -- Perform OAuth flow to get token.
+read_token          -- Read token from pickle file.
+authorize_transfer  -- Get authorizer from token.
+"""
 import globus_sdk
 import pickle
 import os
@@ -13,6 +22,7 @@ tokenfile = '{}/.server_report/token.dat'.format(os.environ['HOME'])
 
 
 def request_token():
+    """Run OAuth flow and store response in pickle for future use."""
     # Create client profile and start OAuth flow
     client = globus_sdk.NativeAppAuthClient(CLIENT_ID)
     # We want refresh tokens for
@@ -36,6 +46,7 @@ def request_token():
 
 
 def read_token():
+    """Get cached token from pickle file."""
     if not os.path.isfile(tokenfile):
         request_token()
     fd = open(tokenfile, 'rb')
@@ -43,7 +54,8 @@ def read_token():
     return token_response
 
 
-def authenticate():
+def authorize_transfer():
+    """Generate authorizer for transfer api use."""
     # Initialize Client and Token
     client = globus_sdk.NativeAppAuthClient(CLIENT_ID)
     token = read_token()
