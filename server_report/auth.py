@@ -42,6 +42,7 @@ def request_token():
     fw = open(tokenfile, 'wb')
     pickle.dump(token_response, fw)
     fw.close()
+    os.chmod(tokenfile, 256)
     return
 
 
