@@ -12,13 +12,13 @@ import logging
 
 helpstring = ("report  [-h|--help] [-v|--verbose] "
               "[-d|--debug] [-l|--list]\n"
-              "        [-u|--users] [-j|--jobs] [-a|--active]\n"
+              "        [-u|--users] [-j|--jobs] [-a|--active] [-e|--error]\n"
               "        [-E <uuid>|--endpoint=<uuid>]\n"
-              "        [-s <isodate>|--start=<isodate>]\n"
-              "        [-e <isodate>|--end=<isodate>]")
-shortops = "hlE:ujs:e:avd"
+              "        [--start=<isodate>]\n"
+              "        [--end=<isodate>]")
+shortops = "hlE:ujeavd"
 longops = ["help", "list", "endpoint=", "users", "jobs", "start=",
-           "end=", "active", "verbose", "debug"]
+           "end=", "active", "error", "verbose", "debug"]
 
 
 def main():
@@ -42,9 +42,9 @@ def main():
             sys.exit(0)
         elif opt in ("-E", "--endpoint"):
             endpoint = arg
-        elif opt in ("-s", "--start"):
+        elif opt in ("--start"):
             startdate = arg
-        elif opt in ("-e", "--end"):
+        elif opt in ("--end"):
             enddate = arg
         elif opt in ("-v", "--verbose"):
             logging_level = logging.INFO
@@ -60,6 +60,8 @@ def main():
             func.list_endpoints()
         elif opt in ("-a", "--active"):
             func.running_count(endpoint)
+        elif opt in ("-e", "--error"):
+            func.errored_jobs(endpoint, startdate, enddate)
 
 
 if __name__ == "__main__":
