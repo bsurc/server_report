@@ -8,6 +8,7 @@ request_token       -- Perform OAuth flow to get token.
 read_token          -- Read token from pickle file.
 authorize_transfer  -- Get authorizer from token.
 """
+from __future__ import unicode_literals
 import globus_sdk
 import pickle
 import os
@@ -31,8 +32,7 @@ def request_token():
     authorize_url = client.oauth2_get_authorize_url()
     print('Please go to this URL and login: {0}'.format(authorize_url))
     # Get auth code response from user
-    auth_code = prompt(
-                'Please enter the code you get after login here: ').strip()
+    auth_code = prompt("Please enter the code you get after login here: ").strip()
     token_response = client.oauth2_exchange_code_for_tokens(auth_code)
     # Save token to file using pickle, overwriting old creds
     if not os.path.exists(directory):
